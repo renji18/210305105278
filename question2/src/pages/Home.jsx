@@ -10,6 +10,7 @@ const Home = () => {
   const [rating, setRating] = useState(null)
   const [range, setRange] = useState({ min: 1, max: 10000 })
   const [available, setAvailable] = useState(null)
+  const [showFilter, setShowFilter] = useState(false)
 
   const productsForFiltering = [
     {
@@ -221,85 +222,113 @@ const Home = () => {
 
   return (
     <div className="py-10">
-      <div className="px-10 pb-10">
-        <p className="font-bold text-3xl my-5">Filter based on COMPANIES</p>
-        <div className="px-5 flex justify-center items-center flex-wrap gap-x-10 gap-y-3">
-          {companies?.map((c) => (
-            <div key={c} onClick={() => setCompany(c)}>
-              <input
-                checked={c === company}
-                type="radio"
-                name="company"
-                id={c}
-              />
-              <label htmlFor={c}>{c}</label>
+      <div className="flex mb-5 items-center gap-10 justify-center">
+        <p
+          className="text-center text-4xl cursor-pointer"
+          onClick={() => setShowFilter(!showFilter)}
+        >
+          Show Filters???
+        </p>
+
+        {showFilter && (
+          <button
+            className="bg-emerald-700 text-white px-5 py-2 rounded-lg"
+            onClick={() => {
+              setShowFilter(false)
+              filterData()
+            }}
+          >
+            APPLY FILTERS
+          </button>
+        )}
+      </div>
+      {showFilter && (
+        <div>
+          <div className="px-10 pb-10">
+            <p className="font-bold text-3xl my-5">Filter based on COMPANIES</p>
+            <div className="px-5 flex justify-center items-center flex-wrap gap-x-10 gap-y-3">
+              {companies?.map((c) => (
+                <div key={c} onClick={() => setCompany(c)}>
+                  <input
+                    checked={c === company}
+                    type="radio"
+                    name="company"
+                    id={c}
+                  />
+                  <label htmlFor={c}>{c}</label>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </div>
+          </div>
 
-      <div className="px-10 pb-10">
-        <p className="font-bold text-3xl my-5">Filter based on CATEGORIES</p>
-        <div className="px-5 flex justify-center items-center flex-wrap gap-x-10 gap-y-3">
-          {categories?.map((c) => (
-            <div key={c} onClick={() => setCategory(c)}>
-              <input
-                checked={c === category}
-                type="radio"
-                name="categories"
-                id={c}
-              />
-              <label htmlFor={c}>{c}</label>
+          <div className="px-10 pb-10">
+            <p className="font-bold text-3xl my-5">
+              Filter based on CATEGORIES
+            </p>
+            <div className="px-5 flex justify-center items-center flex-wrap gap-x-10 gap-y-3">
+              {categories?.map((c) => (
+                <div key={c} onClick={() => setCategory(c)}>
+                  <input
+                    checked={c === category}
+                    type="radio"
+                    name="categories"
+                    id={c}
+                  />
+                  <label htmlFor={c}>{c}</label>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
+
+          <div className="px-10 pb-10 flex items-center justify-center gap-10">
+            <p className="font-bold text-3xl my-5">Filter based on RATING</p>
+            <input
+              type="number"
+              className="border border-black"
+              value={rating}
+              onChange={(e) => setRating(e.target.value)}
+            />
+          </div>
+
+          <div className="px-10 pb-10 flex items-center justify-center gap-10">
+            <p className="font-bold text-3xl my-5">
+              Filter based on PRICE RANGE
+            </p>
+            <input
+              type="number"
+              className="border border-black"
+              placeholder="min"
+              value={range?.min}
+              onChange={(e) =>
+                setRange((prev) => ({ ...prev, min: e.target.value }))
+              }
+            />
+            <input
+              type="number"
+              className="border border-black"
+              placeholder="max"
+              value={range?.max}
+              onChange={(e) =>
+                setRange((prev) => ({ ...prev, max: e.target.value }))
+              }
+            />
+          </div>
+
+          <div className="px-10 pb-10 flex items-center justify-center gap-10">
+            <p className="font-bold text-3xl my-5">
+              Filter based on AVAILABILITY
+            </p>
+            <div onClick={() => setAvailable("yes")}>
+              <input type="radio" name="AVAILABILITY" id="available" />
+              <label htmlFor="available">available</label>
+            </div>
+            <div onClick={() => setAvailable("out-of-stock")}>
+              <input type="radio" name="AVAILABILITY" id="not_available" />
+              <label htmlFor="not_available">not_available</label>
+            </div>
+          </div>
         </div>
-      </div>
-
-      <div className="px-10 pb-10 flex items-center justify-center gap-10">
-        <p className="font-bold text-3xl my-5">Filter based on RATING</p>
-        <input
-          type="number"
-          className="border border-black"
-          value={rating}
-          onChange={(e) => setRating(e.target.value)}
-        />
-      </div>
-
-      <div className="px-10 pb-10 flex items-center justify-center gap-10">
-        <p className="font-bold text-3xl my-5">Filter based on PRICE RANGE</p>
-        <input
-          type="number"
-          className="border border-black"
-          placeholder="min"
-          value={range?.min}
-          onChange={(e) =>
-            setRange((prev) => ({ ...prev, min: e.target.value }))
-          }
-        />
-        <input
-          type="number"
-          className="border border-black"
-          placeholder="max"
-          value={range?.max}
-          onChange={(e) =>
-            setRange((prev) => ({ ...prev, max: e.target.value }))
-          }
-        />
-      </div>
-
-      <div className="px-10 pb-10 flex items-center justify-center gap-10">
-        <p className="font-bold text-3xl my-5">Filter based on AVAILABILITY</p>
-        <div onClick={() => setAvailable("yes")}>
-          <input type="radio" name="AVAILABILITY" id="available" />
-          <label htmlFor="available">available</label>
-        </div>
-        <div onClick={() => setAvailable("out-of-stock")}>
-          <input type="radio" name="AVAILABILITY" id="not_available" />
-          <label htmlFor="not_available">not_available</label>
-        </div>
-      </div>
-
-      <button onClick={filterData}>APPLY FILTERS</button>
+      )}
 
       <div className="flex h-screen items-center justify-center flex-wrap gap-20">
         {data?.length === 0 ? (
